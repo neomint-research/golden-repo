@@ -48,3 +48,6 @@ coverage/
 .env.development
 .env.test
 .env.production
+
+# Secret scanning (keep baseline for detect-secrets)
+# .secrets.baseline

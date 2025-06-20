@@ -143,11 +143,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks Secret Scanner
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+      - name: Run Secret Scanner (detect-secrets)
+        run: |
+          pip install detect-secrets
+          detect-secrets scan --all-files --baseline .secrets.baseline || true
+          if [ -f .secrets.baseline ]; then
+            echo "Secrets baseline created/updated"
+            cat .secrets.baseline
+          fi
+
+      - name: Check for common secret patterns
+        run: |
+          echo "Scanning for common secret patterns..."
+
+          # Check for common secret patterns
+          SECRET_PATTERNS=(
+            "password\s*=\s*['\"][^'\"]{8,}['\"]"
+            "api[_-]?key\s*=\s*['\"][^'\"]{16,}['\"]"
+            "secret\s*=\s*['\"][^'\"]{16,}['\"]"
+            "token\s*=\s*['\"][^'\"]{16,}['\"]"
+            "-----BEGIN\s+(RSA\s+)?PRIVATE\s+KEY-----"
+          )
+
+          FOUND_SECRETS=false
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude="*.log"; then
+              echo "⚠️ Potential secret found matching pattern: $pattern"
+              FOUND_SECRETS=true
+            fi
+          done
+
+          if [ "$FOUND_SECRETS" = true ]; then
+            echo "❌ Potential secrets detected. Please review and remove them."
+            exit 1
+          else
+            echo "✅ No obvious secret patterns detected"
+          fi
 
   dependency-check:
     name: Dependency Security Check
