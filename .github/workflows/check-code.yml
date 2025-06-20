@@ -1,0 +1,32 @@
+name: Check Code & Format
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check-code:
+    runs-on: ubuntu-latest
+    name: Code Quality Validation
+    steps:
+      - name: 📂 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🦄 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📁 Install Dependencies
+        run: pip install pre-commit pyyaml
+
+      - name: 🤖 Run Pre-Commit Hooks
+        run: pre-commit run --all-files || true
+
+      - name: 🎨 Prettier Check
+        run: npx prettier --check .
+
+      - name: 🔍 Run Template Structure Test
+        run: pytest test/test_template_structure.py || true

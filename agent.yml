@@ -1,0 +1,18 @@
+# Machine-readable metadata for coding agents
+identity: template-project
+intent: reusable-secure-structure
+owner: NEOMINT-RESEARCH
+author: skr
+contact: research@neomint.com
+roles:
+  - scaffold
+  - secure
+  - extend
+input-types:
+  - markdown
+  - yaml
+  - shell
+output-goals:
+  - format-clean
+  - token-efficient
+  - agent-compatible

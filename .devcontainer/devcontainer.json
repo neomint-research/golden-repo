@@ -1,0 +1,19 @@
+{
+  "name": "NEOMINT-RESEARCH Devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "gh": "latest",
+    "node": "lts",
+    "trivy": "latest",
+    "git": "latest"
+  },
+  "postCreateCommand": "pip install pre-commit pyyaml",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

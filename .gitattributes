@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.sh linguist-language=Shell
+*.ps1 linguist-language=PowerShell
+*.md linguist-language=Markdown
+*.yml linguist-language=YAML
+*.json linguist-language=JSON
+*.editorconfig text
+.prettierrc text
+.prettierignore text
