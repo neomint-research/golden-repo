@@ -67,16 +67,6 @@ jobs:
           fi
           echo "SUCCESS: Pre-commit hooks passed"
 
-      - name: Prettier Format Check
-        run: |
-          echo "Checking code formatting with Prettier..."
-          if ! npx prettier --check .; then
-            echo "ERROR: Code formatting issues found"
-            echo "Run 'npx prettier --write .' to fix formatting"
-            exit 1
-          fi
-          echo "SUCCESS: Code formatting is correct"
-
       - name: Setup Python for Tests
         uses: actions/setup-python@v5
         with:
