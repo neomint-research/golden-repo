@@ -1,118 +1,118 @@
 version: 2
 updates:
   # GitHub Actions dependencies
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'daily'
-      time: '02:00'
-      timezone: 'UTC'
+      interval: "daily"
+      time: "02:00"
+      timezone: "UTC"
     open-pull-requests-limit: 10
     reviewers:
-      - 'neomint-research/devops-team'
+      - "neomint-research/devops-team"
     assignees:
-      - 'neomint-research/security-team'
+      - "neomint-research/security-team"
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: "chore(deps)"
+      include: "scope"
     labels:
-      - 'dependencies'
-      - 'github-actions'
-      - 'security'
+      - "dependencies"
+      - "github-actions"
+      - "security"
 
   # Python dependencies
-  - package-ecosystem: 'pip'
-    directory: '/'
+  - package-ecosystem: "pip"
+    directory: "/"
     schedule:
-      interval: 'daily'
-      time: '02:00'
-      timezone: 'UTC'
+      interval: "daily"
+      time: "02:00"
+      timezone: "UTC"
     open-pull-requests-limit: 10
     reviewers:
-      - 'neomint-research/backend-team'
+      - "neomint-research/backend-team"
     assignees:
-      - 'neomint-research/security-team'
+      - "neomint-research/security-team"
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: "chore(deps)"
+      include: "scope"
     labels:
-      - 'dependencies'
-      - 'python'
-      - 'security'
+      - "dependencies"
+      - "python"
+      - "security"
     allow:
-      - dependency-type: 'direct'
-      - dependency-type: 'indirect'
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
     ignore:
       # Ignore major version updates for stability
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Node.js dependencies
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'daily'
-      time: '02:00'
-      timezone: 'UTC'
+      interval: "daily"
+      time: "02:00"
+      timezone: "UTC"
     open-pull-requests-limit: 10
     reviewers:
-      - 'neomint-research/frontend-team'
+      - "neomint-research/frontend-team"
     assignees:
-      - 'neomint-research/security-team'
+      - "neomint-research/security-team"
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: "chore(deps)"
+      include: "scope"
     labels:
-      - 'dependencies'
-      - 'npm'
-      - 'security'
+      - "dependencies"
+      - "npm"
+      - "security"
     allow:
-      - dependency-type: 'direct'
-      - dependency-type: 'indirect'
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
     ignore:
       # Ignore major version updates for stability
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Docker dependencies
-  - package-ecosystem: 'docker'
-    directory: '/'
+  - package-ecosystem: "docker"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '02:00'
-      timezone: 'UTC'
+      interval: "weekly"
+      day: "monday"
+      time: "02:00"
+      timezone: "UTC"
     open-pull-requests-limit: 5
     reviewers:
-      - 'neomint-research/devops-team'
+      - "neomint-research/devops-team"
     assignees:
-      - 'neomint-research/security-team'
+      - "neomint-research/security-team"
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: "chore(deps)"
+      include: "scope"
     labels:
-      - 'dependencies'
-      - 'docker'
-      - 'security'
+      - "dependencies"
+      - "docker"
+      - "security"
 
   # Terraform dependencies (if applicable)
-  - package-ecosystem: 'terraform'
-    directory: '/'
+  - package-ecosystem: "terraform"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '02:00'
-      timezone: 'UTC'
+      interval: "weekly"
+      day: "monday"
+      time: "02:00"
+      timezone: "UTC"
     open-pull-requests-limit: 5
     reviewers:
-      - 'neomint-research/devops-team'
+      - "neomint-research/devops-team"
     assignees:
-      - 'neomint-research/security-team'
+      - "neomint-research/security-team"
     commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
+      prefix: "chore(deps)"
+      include: "scope"
     labels:
-      - 'dependencies'
-      - 'terraform'
-      - 'infrastructure'
-      - 'security'
+      - "dependencies"
+      - "terraform"
+      - "infrastructure"
+      - "security"

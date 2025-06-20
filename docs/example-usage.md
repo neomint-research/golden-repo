@@ -54,8 +54,7 @@ Full-Stack: frontend/, backend/, docker-compose.yml
 ### CODEOWNERS
 
 ```yaml
-/src/auth/ @my-org/security-team
-/.github/workflows/ @my-org/devops-team
+/src/auth/ @my-org/security-team /.github/workflows/ @my-org/devops-team
 ```
 
 ### Status.json
