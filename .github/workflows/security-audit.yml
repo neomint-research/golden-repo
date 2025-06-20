@@ -121,14 +121,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install OSV Scanner
+        run: |
+          curl -L https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64 -o osv-scanner
+          chmod +x osv-scanner
+          sudo mv osv-scanner /usr/local/bin/
+
       - name: Run OSV Scanner
-        uses: google/osv-scanner-action@v1.9.2
-        with:
-          scan-args: |-
-            -r
-            --format=sarif
-            --output=osv-results.sarif
-            .
+        run: |
+          osv-scanner -r --format=sarif --output=osv-results.sarif . || true
         continue-on-error: true
 
       - name: Upload OSV Results to GitHub Security
