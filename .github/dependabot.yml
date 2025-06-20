@@ -74,45 +74,5 @@ updates:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
 
-  # Docker dependencies
-  - package-ecosystem: 'docker'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '02:00'
-      timezone: 'UTC'
-    open-pull-requests-limit: 5
-    reviewers:
-      - 'neomint-research/devops-team'
-    assignees:
-      - 'neomint-research/security-team'
-    commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
-    labels:
-      - 'dependencies'
-      - 'docker'
-      - 'security'
-
-  # Terraform dependencies (if applicable)
-  - package-ecosystem: 'terraform'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '02:00'
-      timezone: 'UTC'
-    open-pull-requests-limit: 5
-    reviewers:
-      - 'neomint-research/devops-team'
-    assignees:
-      - 'neomint-research/security-team'
-    commit-message:
-      prefix: 'chore(deps)'
-      include: 'scope'
-    labels:
-      - 'dependencies'
-      - 'terraform'
-      - 'infrastructure'
-      - 'security'
+  # Note: Docker and Terraform ecosystems removed as no corresponding files exist in this template
+  # Add them back when Dockerfile or *.tf files are added to the repository
