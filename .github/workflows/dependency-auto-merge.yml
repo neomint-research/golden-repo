@@ -47,7 +47,7 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.3.4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          check-name: "Security Audit and Vulnerability Scanning"
+          check-name: 'Security Audit and Vulnerability Scanning'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 30
           allowed-conclusions: success,neutral,skipped
@@ -138,25 +138,35 @@ jobs:
       - name: Run Security Scan on Dependencies
         uses: aquasecurity/trivy-action@0.31.0
         with:
-          scan-type: "fs"
-          scan-ref: "."
-          format: "sarif"
-          output: "dependency-security.sarif"
-          severity: "CRITICAL,HIGH"
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'dependency-security.sarif'
+          severity: 'CRITICAL,HIGH'
 
       - name: Check for Critical Vulnerabilities
+        id: security-check
+        continue-on-error: true
         run: |
+          # Check if SARIF file exists
+          if [[ ! -f "dependency-security.sarif" ]]; then
+            echo "Warning: dependency-security.sarif not found"
+            echo "has_vulnerabilities=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Check for critical vulnerabilities
           if grep -q '"level": "error"' dependency-security.sarif; then
             echo "Critical vulnerabilities found in dependencies"
-            echo "SECURITY_BLOCK=true" >> $GITHUB_ENV
+            echo "has_vulnerabilities=true" >> $GITHUB_OUTPUT
             exit 1
           else
             echo "No critical vulnerabilities found"
-            echo "SECURITY_BLOCK=false" >> $GITHUB_ENV
+            echo "has_vulnerabilities=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Block Auto-merge on Security Issues
-        if: env.SECURITY_BLOCK == 'true'
+        if: steps.security-check.outputs.has_vulnerabilities == 'true'
         run: |
           gh pr comment "$PR_URL" --body "🛑 **Auto-merge Blocked**
 

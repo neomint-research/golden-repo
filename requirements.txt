@@ -1,0 +1,47 @@
+# Core development dependencies
+pytest>=8.0.0
+pytest-cov>=4.0.0
+pytest-xdist>=3.5.0
+pytest-mock>=3.12.0
+
+# Code quality and formatting
+black>=24.0.0
+isort>=5.13.0
+flake8>=7.0.0
+mypy>=1.8.0
+
+# Security scanning
+safety>=3.0.0
+bandit>=1.7.5
+
+# Pre-commit hooks
+pre-commit>=3.6.0
+
+# Documentation
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0
+
+# YAML processing
+PyYAML>=6.0.1
+
+# Development utilities
+python-dotenv>=1.0.0
+click>=8.1.7
+
+# Testing utilities
+factory-boy>=3.3.0
+faker>=22.0.0
+
+# Optional: Web framework dependencies (uncomment if needed)
+# flask>=3.0.0
+# fastapi>=0.109.0
+# django>=5.0.0
+
+# Optional: Data processing (uncomment if needed)
+# pandas>=2.2.0
+# numpy>=1.26.0
+# requests>=2.31.0
+
+# Optional: Database (uncomment if needed)
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0

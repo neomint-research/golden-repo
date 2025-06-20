@@ -65,7 +65,7 @@ repos:
       - id: hadolint
         args: ['--ignore', 'DL3008', '--ignore', 'DL3009']
 
-default_stages: [commit]
+default_stages: [pre-commit]
 
 # Configuration for specific tools
 ci:
