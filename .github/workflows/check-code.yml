@@ -50,7 +50,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install Dependencies
         run: pip install pre-commit pyyaml
@@ -59,7 +58,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
 
       - name: Install Prettier
         run: npm install -g prettier
@@ -78,7 +76,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Install Test Dependencies
         run: |
