@@ -136,7 +136,7 @@ jobs:
             ${{ runner.os }}-trivy-
 
       - name: Run Security Scan on Dependencies
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.31.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
