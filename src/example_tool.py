@@ -5,7 +5,7 @@ import argparse
 import json
 import logging
 import sys
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 
 class ExampleTool:
