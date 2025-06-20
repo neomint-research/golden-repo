@@ -67,10 +67,26 @@ just test             # structural validation
 
 ## 🤖 Agent-First Architecture
 
-- Flat, semantically predictable structure
-- `agent.yml` = roles, identity, behavior
+This repository is agent-aware and designed for AI coding assistants.
+
+### Agent Guidelines
+
+**Role & Responsibility:**
+- ✅ You are an assistant, not an author
+- ✅ You act only where permitted (`src/`, `docs/`, `test/`)
+- 🚫 Do not create new top-level folders
+- 🚫 Do not modify root metadata files unless instructed
+
+**Structure & Navigation:**
+- `agent.yml` = roles, identity, behavior context
 - `status.json` = current machine-understandable state
-- `extension-guide.md` = all allowed file types, formats, placement
+- `docs/extension-guide.md` = allowed file types, formats, placement
+- `logs/*.md` = optional traces or decisions
+
+**Architecture Principles:**
+- Flat, semantically predictable structure
+- Token-efficient layout for AI comprehension
+- Clear boundaries and permissions
 
 ---
 
