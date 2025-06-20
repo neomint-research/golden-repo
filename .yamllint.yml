@@ -22,7 +22,7 @@ rules:
 
   # Truthy values
   truthy:
-    allowed-values: ['true', 'false', 'yes', 'no']
+    allowed-values: ["true", "false", "yes", "no"]
     check-keys: true
 
   # Empty lines

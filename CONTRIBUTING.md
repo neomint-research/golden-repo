@@ -36,5 +36,4 @@ Thank you for improving this project. Please follow these conventions.
 
 ## 🔐 Security
 
-Please report any vulnerabilities directly via  
-📬 **research@neomint.com**
+Please report any vulnerabilities directly via 📬 **research@neomint.com**

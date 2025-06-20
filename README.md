@@ -72,18 +72,21 @@ This repository is agent-aware and designed for AI coding assistants.
 ### Agent Guidelines
 
 **Role & Responsibility:**
+
 - ✅ You are an assistant, not an author
 - ✅ You act only where permitted (`src/`, `docs/`, `test/`)
 - 🚫 Do not create new top-level folders
 - 🚫 Do not modify root metadata files unless instructed
 
 **Structure & Navigation:**
+
 - `agent.yml` = roles, identity, behavior context
 - `status.json` = current machine-understandable state
 - `docs/extension-guide.md` = allowed file types, formats, placement
 - `logs/*.md` = optional traces or decisions
 
 **Architecture Principles:**
+
 - Flat, semantically predictable structure
 - Token-efficient layout for AI comprehension
 - Clear boundaries and permissions

@@ -5,7 +5,7 @@ import argparse
 import json
 import logging
 import sys
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class ExampleTool:
@@ -14,9 +14,7 @@ class ExampleTool:
     def __init__(self, verbose: bool = False):
         self.logger = self._setup_logging(verbose)
         self.logger.info("ExampleTool initialized")
-    
 
-    
     def _setup_logging(self, verbose: bool) -> logging.Logger:
         """Setup logging configuration."""
         logger = logging.getLogger(__name__)
@@ -24,7 +22,7 @@ class ExampleTool:
 
         if not logger.handlers:
             handler = logging.StreamHandler(sys.stdout)
-            formatter = logging.Formatter('%(levelname)s - %(message)s')
+            formatter = logging.Formatter("%(levelname)s - %(message)s")
             handler.setFormatter(formatter)
             logger.addHandler(handler)
 
@@ -41,7 +39,7 @@ class ExampleTool:
             "status": "success",
             "input_keys": list(data.keys()),
             "processed_at": "2025-06-20T22:00:00Z",
-            "tool_info": {"name": "example-tool", "version": "1.0.0"}
+            "tool_info": {"name": "example-tool", "version": "1.0.0"},
         }
 
         if "items" in data:
@@ -49,7 +47,7 @@ class ExampleTool:
 
         self.logger.info(f"Processing completed. Processed {len(data)} keys.")
         return results
-    
+
     def run(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Main execution method."""
         try:
@@ -65,7 +63,9 @@ class ExampleTool:
 def main():
     """Main entry point for the example tool."""
     parser = argparse.ArgumentParser(description="Example Python tool")
-    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging")
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
+    )
     parser.add_argument("--input", "-i", help="JSON input data")
     args = parser.parse_args()
 
