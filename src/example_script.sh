@@ -48,7 +48,8 @@ process_data() {
         return 0
     fi
 
-    local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    local timestamp
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     echo "{\"status\":\"success\",\"processed_at\":\"$timestamp\",\"input\":\"$input_data\"}"
     log_success "Processing completed"
 }
@@ -57,7 +58,7 @@ process_data() {
 parse_arguments() {
     while [[ $# -gt 0 ]]; do
         case $1 in
-            -v|--verbose) VERBOSE=true; shift ;;
+            -v|--verbose) export VERBOSE=true; shift ;;
             -n|--dry-run) DRY_RUN=true; shift ;;
             -h|--help) show_help; exit 0 ;;
             *) log_error "Unknown option: $1"; exit 2 ;;

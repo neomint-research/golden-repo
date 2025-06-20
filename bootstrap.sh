@@ -16,9 +16,10 @@ log_success() { echo -e "${GREEN}[SUCCESS]${NC} $*"; }
 
 # Project setup
 detect_project_name() {
-    local project_name="$(basename "$(pwd)")"
+    local project_name
+    project_name="$(basename "$(pwd)")"
     if [[ "$project_name" == "golden-repo" ]]; then
-        read -p "Enter project name (default: my-project): " user_input
+        read -r -p "Enter project name (default: my-project): " user_input
         project_name="${user_input:-my-project}"
     fi
     echo "$project_name"
