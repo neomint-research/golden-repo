@@ -11,22 +11,87 @@ jobs:
     runs-on: ubuntu-latest
     name: Code Quality Validation
     steps:
-      - name: 📂 Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🦄 Setup Python
+      # Performance optimization: Cache dependencies
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-code-check-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-code-check-
+            ${{ runner.os }}-pip-
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-code-check-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-code-check-
+            ${{ runner.os }}-node-
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pre-commit-
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: 📁 Install Dependencies
+      - name: Install Dependencies
         run: pip install pre-commit pyyaml
 
-      - name: 🤖 Run Pre-Commit Hooks
-        run: pre-commit run --all-files || true
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
 
-      - name: 🎨 Prettier Check
-        run: npx prettier --check .
+      - name: Install Prettier
+        run: npm install -g prettier
 
-      - name: 🔍 Run Template Structure Test
-        run: pytest test/test_template_structure.py || true
+      - name: Run Pre-Commit Hooks
+        run: |
+          echo "Running pre-commit hooks..."
+          if ! pre-commit run --all-files; then
+            echo "ERROR: Pre-commit hooks failed"
+            echo "Please fix the issues and commit again"
+            exit 1
+          fi
+          echo "SUCCESS: Pre-commit hooks passed"
+
+      - name: Prettier Format Check
+        run: |
+          echo "Checking code formatting with Prettier..."
+          if ! npx prettier --check .; then
+            echo "ERROR: Code formatting issues found"
+            echo "Run 'npx prettier --write .' to fix formatting"
+            exit 1
+          fi
+          echo "SUCCESS: Code formatting is correct"
+
+      - name: Setup Python for Tests
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Test Dependencies
+        run: |
+          pip install pytest pyyaml
+
+      - name: Run Template Structure Test
+        run: |
+          echo "Running template structure tests..."
+          if ! pytest test/test_template_structure.py -v; then
+            echo "ERROR: Template structure tests failed"
+            echo "Please check the test output above for details"
+            exit 1
+          fi
+          echo "SUCCESS: Template structure tests passed"

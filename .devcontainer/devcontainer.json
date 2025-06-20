@@ -10,10 +10,7 @@
   "postCreateCommand": "pip install pre-commit pyyaml",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "esbenp.prettier-vscode"
-      ]
+      "extensions": ["ms-python.python", "esbenp.prettier-vscode"]
     }
   }
 }

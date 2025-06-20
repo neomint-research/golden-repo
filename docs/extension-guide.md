@@ -17,13 +17,13 @@ logs/           → Auto-fix output & traces
 
 ## 🧱 Accepted File Types
 
-| Type            | Naming convention        |
-|-----------------|--------------------------|
-| Scripts (bash)  | `src/tool_name.sh`       |
-| PowerShell      | `src/tool_name.ps1`      |
-| Python          | `src/tool_name.py`       |
-| Docs            | `docs/*.md`              |
-| Status/Meta     | `agent.yml`, `status.json` |
+| Type           | Naming convention          |
+| -------------- | -------------------------- |
+| Scripts (bash) | `src/tool_name.sh`         |
+| PowerShell     | `src/tool_name.ps1`        |
+| Python         | `src/tool_name.py`         |
+| Docs           | `docs/*.md`                |
+| Status/Meta    | `agent.yml`, `status.json` |
 
 ## 📑 Directory Rules
 

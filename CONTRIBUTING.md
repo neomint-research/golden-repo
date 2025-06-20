@@ -24,12 +24,12 @@ Thank you for improving this project. Please follow these conventions.
 
 ## 📦 Commit Format
 
-| Prefix    | Purpose         |
-|-----------|------------------|
-| `fix:`    | Bugfix           |
-| `feat:`   | New feature      |
-| `docs:`   | Documentation    |
-| `test:`   | Tests added/changed |
+| Prefix      | Purpose                |
+| ----------- | ---------------------- |
+| `fix:`      | Bugfix                 |
+| `feat:`     | New feature            |
+| `docs:`     | Documentation          |
+| `test:`     | Tests added/changed    |
 | `refactor:` | Structural refactoring |
 
 ---

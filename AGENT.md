@@ -18,12 +18,12 @@ Follow the constraints and structure described here.
 
 ## 🧱 Structure & Navigation
 
-| File                    | Purpose                                  |
-|--------------------------|------------------------------------------|
-| `agent.yml`              | Role, intent, and context declaration    |
-| `status.json`            | Current machine-readable status          |
-| `extension-guide.md`     | Allowed files, formats, and paths        |
-| `logs/*.md`              | Record traces or decisions               |
+| File                 | Purpose                               |
+| -------------------- | ------------------------------------- |
+| `agent.yml`          | Role, intent, and context declaration |
+| `status.json`        | Current machine-readable status       |
+| `extension-guide.md` | Allowed files, formats, and paths     |
+| `logs/*.md`          | Record traces or decisions            |
 
 ---
 
@@ -33,6 +33,7 @@ If you perform actions, log them here:
 
 ```markdown
 # logs/agent-2025-06-20.md
+
 - Verified structure
 - Created `src/clean_data.py` using extension guide
 ```

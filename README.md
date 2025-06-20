@@ -1,8 +1,10 @@
 # 🛡️ NEOMINT-RESEARCH Project Template
 
-This is the official NEOMINT-RESEARCH template repository. It is designed for security-first, agent-compatible, and highly reusable projects.
+This is the official NEOMINT-RESEARCH template repository. It is designed for security-first,
+agent-compatible, and highly reusable projects.
 
 Supports:
+
 - 🛠️ CLI tools, scripts (e.g. Python, PowerShell)
 - 📄 Documentation and Markdown-based projects
 - 🤖 Agent-integrated workflows
@@ -11,10 +13,13 @@ Supports:
 ---
 
 ## 🚀 Quickstart (One-Line Bootstrap)
+
 ```bash
 npx degit neomint-research/template-project my-project && cd my-project && bash bootstrap.sh
 ```
+
 > For Windows PowerShell:
+
 ```powershell
 npx degit neomint-research/template-project my-project ; cd my-project ; ./bootstrap.ps1
 ```
@@ -23,17 +28,18 @@ npx degit neomint-research/template-project my-project ; cd my-project ; ./boots
 
 ## 🔐 Security & Maintenance Features
 
-| Feature               | Description |
-|-----------------------|-------------|
-| ✅ Self-Healing CI | Auto-corrects format/lint issues on commit |
-| ✅ Security Checks  | CodeQL, Trivy, OSV & Secretscanner |
-| ✅ Dependabot       | Daily update of dependencies and Actions |
-| ✅ CODEOWNERS       | Review enforcement for sensitive files |
+| Feature             | Description                                 |
+| ------------------- | ------------------------------------------- |
+| ✅ Self-Healing CI  | Auto-corrects format/lint issues on commit  |
+| ✅ Security Checks  | CodeQL, Trivy, OSV & Secretscanner          |
+| ✅ Dependabot       | Daily update of dependencies and Actions    |
+| ✅ CODEOWNERS       | Review enforcement for sensitive files      |
 | ✅ Agent-Compatible | Token-efficient, semantically guided layout |
 
 ---
 
 ## 📆 Project Structure Overview
+
 ```text
 src/            → Code, scripts, modules
 docs/           → Project documentation & lookups
@@ -50,6 +56,7 @@ status.json     → Machine-readable project state
 ---
 
 ## 💼 Dev Commands
+
 ```bash
 bash bootstrap.sh     # initial setup & hook install
 just fmt              # format all files
@@ -68,11 +75,14 @@ just test             # structural validation
 ---
 
 ## 📄 License
+
 See [`LICENSE`](./LICENSE)
 
 ## 📨 Security Contact
+
 See [`SECURITY.md`](./SECURITY.md) or email **research@neomint.com**
 
 ## 🧠 Learn More
+
 - Structure: [`docs/extension-guide.md`](./docs/extension-guide.md)
 - Contribution: [`CONTRIBUTING.md`](./CONTRIBUTING.md)

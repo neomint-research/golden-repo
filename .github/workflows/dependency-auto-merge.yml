@@ -1,0 +1,169 @@
+name: Dependency Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  dependabot-auto-merge:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Performance optimization: Cache GitHub CLI and tools
+      - name: Cache GitHub CLI
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/gh
+            ~/.config/gh
+          key: ${{ runner.os }}-gh-cli-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-gh-cli-
+
+      - name: Get Dependabot Metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check Security Update
+        id: security-check
+        run: |
+          echo "is_security_update=${{ contains(steps.metadata.outputs.dependency-names, 'security') || steps.metadata.outputs.update-type == 'version-update:semver-patch' }}" >> $GITHUB_OUTPUT
+          echo "is_minor_update=${{ steps.metadata.outputs.update-type == 'version-update:semver-minor' }}" >> $GITHUB_OUTPUT
+          echo "is_major_update=${{ steps.metadata.outputs.update-type == 'version-update:semver-major' }}" >> $GITHUB_OUTPUT
+
+      - name: Wait for CI Checks
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          check-name: "Security Audit and Vulnerability Scanning"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+          allowed-conclusions: success,neutral,skipped
+
+      - name: Auto-approve Security Updates
+        if: steps.security-check.outputs.is_security_update == 'true'
+        run: |
+          echo "Auto-approving security update: ${{ steps.metadata.outputs.update-type }}"
+          gh pr review --approve "$PR_URL" --body "Auto-approving security update from Dependabot"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-approve Patch Updates
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: |
+          echo "Auto-approving patch update"
+          gh pr review --approve "$PR_URL" --body "Auto-approving patch update from Dependabot"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge Approved Updates
+        if: |
+          (steps.security-check.outputs.is_security_update == 'true' ||
+           steps.metadata.outputs.update-type == 'version-update:semver-patch') &&
+          github.event.pull_request.mergeable == true
+        run: |
+          echo "Enabling auto-merge for approved update"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on Major Updates
+        if: steps.security-check.outputs.is_major_update == 'true'
+        run: |
+          gh pr comment "$PR_URL" --body "🚨 **Major Version Update Detected**
+
+          This PR contains a major version update that requires manual review:
+          - **Dependency**: ${{ steps.metadata.outputs.dependency-names }}
+          - **Update Type**: ${{ steps.metadata.outputs.update-type }}
+          - **Previous Version**: ${{ steps.metadata.outputs.previous-version }}
+          - **New Version**: ${{ steps.metadata.outputs.new-version }}
+
+          Please review the changelog and breaking changes before merging.
+
+          **Security Team**: @neomint-research/security-team
+          **Maintainers**: @neomint-research/maintainers"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Labels
+        run: |
+          if [[ "${{ steps.security-check.outputs.is_security_update }}" == "true" ]]; then
+            gh pr edit "$PR_URL" --add-label "security,auto-merge"
+          elif [[ "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-patch" ]]; then
+            gh pr edit "$PR_URL" --add-label "patch-update,auto-merge"
+          elif [[ "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-minor" ]]; then
+            gh pr edit "$PR_URL" --add-label "minor-update,needs-review"
+          elif [[ "${{ steps.metadata.outputs.update-type }}" == "version-update:semver-major" ]]; then
+            gh pr edit "$PR_URL" --add-label "major-update,needs-manual-review"
+          fi
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  security-validation:
+    name: Security Validation for Auto-merge
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Performance optimization: Cache Trivy database for dependency scanning
+      - name: Cache Trivy database
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-trivy-deps-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-trivy-deps-
+            ${{ runner.os }}-trivy-
+
+      - name: Run Security Scan on Dependencies
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "dependency-security.sarif"
+          severity: "CRITICAL,HIGH"
+
+      - name: Check for Critical Vulnerabilities
+        run: |
+          if grep -q '"level": "error"' dependency-security.sarif; then
+            echo "Critical vulnerabilities found in dependencies"
+            echo "SECURITY_BLOCK=true" >> $GITHUB_ENV
+            exit 1
+          else
+            echo "No critical vulnerabilities found"
+            echo "SECURITY_BLOCK=false" >> $GITHUB_ENV
+          fi
+
+      - name: Block Auto-merge on Security Issues
+        if: env.SECURITY_BLOCK == 'true'
+        run: |
+          gh pr comment "$PR_URL" --body "🛑 **Auto-merge Blocked**
+
+          Critical security vulnerabilities detected in this dependency update.
+          Manual security review required before merging.
+
+          **Security Team**: @neomint-research/security-team"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

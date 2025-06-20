@@ -1,0 +1,54 @@
+# Code Ownership Rules for Golden Repo Template
+# This file defines who must review changes to specific files and directories
+
+# Global ownership - all files require review by repository maintainers
+* @neomint-research/maintainers
+
+# Security-sensitive files require security team review
+/.github/workflows/ @neomint-research/security-team @neomint-research/devops-team
+/CODEOWNERS @neomint-research/security-team @neomint-research/maintainers
+/.github/dependabot.yml @neomint-research/security-team
+/security/ @neomint-research/security-team
+
+# CI/CD and automation files require DevOps review
+/.github/workflows/*.yml @neomint-research/devops-team
+/.github/actions/ @neomint-research/devops-team
+/scripts/ @neomint-research/devops-team
+/Dockerfile* @neomint-research/devops-team
+/docker-compose*.yml @neomint-research/devops-team
+
+# Configuration files require careful review
+/.prettierrc @neomint-research/frontend-team @neomint-research/maintainers
+/.eslintrc* @neomint-research/frontend-team
+/pyproject.toml @neomint-research/backend-team
+/requirements*.txt @neomint-research/backend-team
+/package*.json @neomint-research/frontend-team
+/yarn.lock @neomint-research/frontend-team
+/Pipfile* @neomint-research/backend-team
+
+# Documentation requires technical writing review
+/README.md @neomint-research/docs-team @neomint-research/maintainers
+/docs/ @neomint-research/docs-team
+/*.md @neomint-research/docs-team
+
+# Source code by language/framework
+/src/python/ @neomint-research/backend-team
+/src/javascript/ @neomint-research/frontend-team
+/src/typescript/ @neomint-research/frontend-team
+/agents/ @neomint-research/ai-team @neomint-research/backend-team
+
+# Test files require review from respective teams
+/tests/ @neomint-research/qa-team
+/test/ @neomint-research/qa-team
+/**/*test*.py @neomint-research/qa-team @neomint-research/backend-team
+/**/*test*.js @neomint-research/qa-team @neomint-research/frontend-team
+/**/*spec*.js @neomint-research/qa-team @neomint-research/frontend-team
+
+# License and legal files require legal review
+/LICENSE* @neomint-research/legal-team @neomint-research/maintainers
+/NOTICE* @neomint-research/legal-team
+/COPYRIGHT* @neomint-research/legal-team
+
+# Template-specific files
+/template/ @neomint-research/maintainers
+/examples/ @neomint-research/docs-team @neomint-research/maintainers

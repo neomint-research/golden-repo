@@ -1,0 +1,11 @@
+# .coveragerc - Kompakte Coverage-Konfiguration
+[run]
+source = src
+omit = */tests/*, */test_*, */__pycache__/*, */venv/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:

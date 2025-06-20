@@ -1,0 +1,269 @@
+name: Security Audit and Vulnerability Scanning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript", "python"]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Performance optimization: Cache CodeQL databases
+      - name: Cache CodeQL database
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/codeql
+            /opt/hostedtoolcache/CodeQL
+          key: ${{ runner.os }}-codeql-${{ matrix.language }}-${{ hashFiles('**/*.js', '**/*.py', '**/*.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-codeql-${{ matrix.language }}-
+            ${{ runner.os }}-codeql-
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended,security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+  trivy-scan:
+    name: Trivy Vulnerability Scanner
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Performance optimization: Cache Trivy database
+      - name: Cache Trivy database
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-trivy-db-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-trivy-db-
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH,MEDIUM"
+
+      - name: Upload Trivy Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"
+
+      - name: Generate Trivy Report
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "table"
+          output: "trivy-report.txt"
+
+      - name: Upload Trivy Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-security-report
+          path: trivy-report.txt
+          retention-days: 30
+
+  osv-scanner:
+    name: OSV Vulnerability Scanner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run OSV Scanner
+        uses: google/osv-scanner-action@v1
+        with:
+          scan-args: |-
+            -r
+            --format=sarif
+            --output=osv-results.sarif
+            .
+        continue-on-error: true
+
+      - name: Upload OSV Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: "osv-results.sarif"
+
+  secret-scan:
+    name: Secret Detection Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks Secret Scanner
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  dependency-check:
+    name: Dependency Security Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Performance optimization: Cache Python dependencies
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-security-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-security-
+            ${{ runner.os }}-pip-
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Check Python Dependencies
+        run: |
+          # Create requirements if they exist
+          if [ -f "requirements.txt" ]; then
+            safety check -r requirements.txt --json --output safety-report.json || true
+          fi
+
+          # Check installed packages
+          pip freeze | safety check --stdin --json --output safety-installed.json || true
+        continue-on-error: true
+
+      - name: Upload Safety Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-security-reports
+          path: |
+            safety-*.json
+          retention-days: 30
+
+  security-summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    needs:
+      [codeql-analysis, trivy-scan, osv-scanner, secret-scan, dependency-check]
+    if: always()
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Generate Security Summary
+        run: |
+          echo "# Security Scan Summary" > security-summary.md
+          echo "" >> security-summary.md
+          echo "**Scan Date:** $(date -u)" >> security-summary.md
+          echo "**Repository:** ${{ github.repository }}" >> security-summary.md
+          echo "**Branch:** ${{ github.ref_name }}" >> security-summary.md
+          echo "" >> security-summary.md
+
+          echo "## Scan Results" >> security-summary.md
+          echo "" >> security-summary.md
+          echo "| Scanner | Status | Notes |" >> security-summary.md
+          echo "|---------|--------|-------|" >> security-summary.md
+          echo "| CodeQL | ${{ needs.codeql-analysis.result }} | Static analysis for security vulnerabilities |" >> security-summary.md
+          echo "| Trivy | ${{ needs.trivy-scan.result }} | Container and filesystem vulnerability scan |" >> security-summary.md
+          echo "| OSV Scanner | ${{ needs.osv-scanner.result }} | Open source vulnerability database scan |" >> security-summary.md
+          echo "| Secret Scan | ${{ needs.secret-scan.result }} | Git history secret detection |" >> security-summary.md
+          echo "| Dependency Check | ${{ needs.dependency-check.result }} | Python dependency vulnerability scan |" >> security-summary.md
+          echo "" >> security-summary.md
+
+          if [[ "${{ needs.codeql-analysis.result }}" == "failure" || "${{ needs.trivy-scan.result }}" == "failure" || "${{ needs.secret-scan.result }}" == "failure" ]]; then
+            echo "## Critical Issues Detected" >> security-summary.md
+            echo "" >> security-summary.md
+            echo "One or more security scans have detected critical issues. Please review the detailed reports in the Security tab." >> security-summary.md
+            echo "" >> security-summary.md
+          else
+            echo "## Security Status: PASSED" >> security-summary.md
+            echo "" >> security-summary.md
+            echo "All security scans completed successfully with no critical issues detected." >> security-summary.md
+            echo "" >> security-summary.md
+          fi
+
+          echo "## Next Steps" >> security-summary.md
+          echo "" >> security-summary.md
+          echo "1. Review detailed scan results in the [Security tab](https://github.com/${{ github.repository }}/security)" >> security-summary.md
+          echo "2. Address any identified vulnerabilities based on severity" >> security-summary.md
+          echo "3. Update dependencies and configurations as needed" >> security-summary.md
+          echo "4. Re-run scans after fixes to verify resolution" >> security-summary.md
+
+      - name: Upload Security Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-summary
+          path: security-summary.md
+          retention-days: 90
+
+      - name: Comment Security Summary on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('security-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

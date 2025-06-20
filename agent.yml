@@ -1,18 +1,65 @@
 # Machine-readable metadata for coding agents
-identity: template-project
-intent: reusable-secure-structure
+identity: golden-repo-template
+intent: comprehensive-secure-development-template
 owner: NEOMINT-RESEARCH
 author: skr
 contact: research@neomint.com
+version: 2.0.0
+status: production-ready
+last_updated: 2025-06-20
+
 roles:
   - scaffold
   - secure
   - extend
+  - validate
+  - automate
+
+capabilities:
+  - security-scanning
+  - dependency-management
+  - code-quality-enforcement
+  - automated-testing
+  - documentation-generation
+  - example-provision
+
 input-types:
   - markdown
   - yaml
   - shell
+  - python
+  - javascript
+  - json
+  - dockerfile
+
 output-goals:
   - format-clean
   - token-efficient
   - agent-compatible
+  - security-first
+  - production-ready
+  - well-documented
+
+features:
+  security:
+    - codeql-analysis
+    - trivy-scanning
+    - osv-scanning
+    - secret-detection
+    - dependency-auditing
+  automation:
+    - dependabot-integration
+    - auto-merge-workflows
+    - pre-commit-hooks
+    - ci-cd-pipelines
+  quality:
+    - code-formatting
+    - linting
+    - testing-framework
+    - documentation-standards
+
+compliance:
+  - security-best-practices
+  - code-review-requirements
+  - audit-trail-maintenance
+  - vulnerability-management
