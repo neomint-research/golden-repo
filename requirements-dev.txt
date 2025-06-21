@@ -3,8 +3,9 @@
 
 # Development-only dependencies
 ipython>=8.20.0
-jupyter>=1.0.0
-notebook>=7.0.0
+jupyter>=1.1.1  # Updated for security fixes
+jupyterlab>=4.2.5  # Fixed CVE-2024-43805, CVE-2024-22421, CVE-2024-22420
+notebook>=7.2.2  # Fixed CVE-2024-43805, CVE-2024-22421, CVE-2024-22420
 
 # Debugging
 pdb++>=0.10.3
