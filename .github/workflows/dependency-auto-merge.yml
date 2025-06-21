@@ -49,14 +49,38 @@ jobs:
           echo "is_major_update=${{ steps.metadata.outputs.update-type == 'version-update:semver-major' }}" >> $GITHUB_OUTPUT
 
       - name: Wait for CI Checks
-        uses: fountainhead/action-wait-for-check@v1.2.0
+        id: wait-for-checks
         continue-on-error: true
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: 'Code Quality Validation'
-          ref: ${{ github.event.pull_request.head.sha }}
-          timeoutSeconds: 300
-          intervalSeconds: 20
+        run: |
+          echo "Waiting for required checks to complete..."
+
+          # Wait for the Code Quality Validation check
+          max_attempts=15
+          attempt=0
+
+          while [ $attempt -lt $max_attempts ]; do
+            echo "Attempt $((attempt + 1))/$max_attempts: Checking for Code Quality Validation..."
+
+            # Get check runs for this commit
+            check_status=$(gh api repos/${{ github.repository }}/commits/${{ github.event.pull_request.head.sha }}/check-runs \
+              --jq '.check_runs[] | select(.name == "Code Quality Validation") | .status')
+
+            if [ "$check_status" = "completed" ]; then
+              echo "Code Quality Validation check completed"
+              break
+            elif [ -n "$check_status" ]; then
+              echo "Code Quality Validation check is $check_status, waiting..."
+            else
+              echo "Code Quality Validation check not found yet, waiting..."
+            fi
+
+            sleep 20
+            attempt=$((attempt + 1))
+          done
+
+          echo "Check wait completed after $attempt attempts"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Auto-approve Security Updates
         if: steps.security-check.outputs.is_security_update == 'true'
