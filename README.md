@@ -1,4 +1,4 @@
-# 🛡️ NEOMINT-RESEARCH Project Template
+# NEOMINT-RESEARCH Project Template
 
 [![Check Code & Format](https://github.com/neomint-research/golden-repo/actions/workflows/check-code.yml/badge.svg)](https://github.com/neomint-research/golden-repo/actions/workflows/check-code.yml)
 [![Security Audit](https://github.com/neomint-research/golden-repo/actions/workflows/security-audit.yml/badge.svg)](https://github.com/neomint-research/golden-repo/actions/workflows/security-audit.yml)
@@ -11,14 +11,14 @@ agent-compatible, and highly reusable projects.
 
 Supports:
 
-- 🛠️ CLI tools, scripts (e.g. Python, PowerShell)
-- 📄 Documentation and Markdown-based projects
-- 🤖 Agent-integrated workflows
-- 📊 Research and hybrid setups
+- CLI tools, scripts (e.g. Python, PowerShell)
+- Documentation and Markdown-based projects
+- Agent-integrated workflows
+- Research and hybrid setups
 
 ---
 
-## 🚀 Quickstart (One-Line Bootstrap)
+## Quickstart (One-Line Bootstrap)
 
 ```bash
 npx degit neomint-research/template-project my-project && cd my-project && bash bootstrap.sh
@@ -32,19 +32,19 @@ npx degit neomint-research/template-project my-project ; cd my-project ; ./boots
 
 ---
 
-## 🔐 Security & Maintenance Features
+## Security & Maintenance Features
 
 | Feature             | Description                                 |
 | ------------------- | ------------------------------------------- |
-| ✅ Self-Healing CI  | Auto-corrects format/lint issues on commit  |
-| ✅ Security Checks  | CodeQL, Trivy, OSV & Secretscanner          |
-| ✅ Dependabot       | Daily update of dependencies and Actions    |
-| ✅ CODEOWNERS       | Review enforcement for sensitive files      |
-| ✅ Agent-Compatible | Token-efficient, semantically guided layout |
+| Self-Healing CI     | Auto-corrects format/lint issues on commit  |
+| Security Checks     | CodeQL, Trivy, OSV & Secretscanner          |
+| Dependabot          | Daily update of dependencies and Actions    |
+| CODEOWNERS          | Review enforcement for sensitive files      |
+| Agent-Compatible    | Token-efficient, semantically guided layout |
 
 ---
 
-## 📆 Project Structure Overview
+## Project Structure Overview
 
 ```text
 src/            → Code, scripts, modules
@@ -61,7 +61,7 @@ status.json     → Machine-readable project state
 
 ---
 
-## 💼 Dev Commands
+## Dev Commands
 
 ```bash
 bash bootstrap.sh     # initial setup & hook install
@@ -71,7 +71,7 @@ just test             # structural validation
 
 ---
 
-## 🤖 Agent-First Architecture
+## Agent-First Architecture
 
 This repository is agent-aware and designed for AI coding assistants.
 
@@ -79,10 +79,10 @@ This repository is agent-aware and designed for AI coding assistants.
 
 **Role & Responsibility:**
 
-- ✅ You are an assistant, not an author
-- ✅ You act only where permitted (`src/`, `docs/`, `test/`)
-- 🚫 Do not create new top-level folders
-- 🚫 Do not modify root metadata files unless instructed
+- You are an assistant, not an author
+- You act only where permitted (`src/`, `docs/`, `test/`)
+- Do not create new top-level folders
+- Do not modify root metadata files unless instructed
 
 **Structure & Navigation:**
 
@@ -99,15 +99,15 @@ This repository is agent-aware and designed for AI coding assistants.
 
 ---
 
-## 📄 License
+## License
 
 See [`LICENSE`](./LICENSE)
 
-## 📨 Security Contact
+## Security Contact
 
 See [`SECURITY.md`](./SECURITY.md) or email **research@neomint.com**
 
-## 🧠 Learn More
+## Learn More
 
 - Structure: [`docs/extension-guide.md`](./docs/extension-guide.md)
 - Contribution: [`CONTRIBUTING.md`](./CONTRIBUTING.md)

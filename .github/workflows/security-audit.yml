@@ -178,16 +178,16 @@ jobs:
           FOUND_SECRETS=false
           for pattern in "${SECRET_PATTERNS[@]}"; do
             if grep -r -i -E "$pattern" . --exclude-dir=.git --exclude-dir=node_modules --exclude="*.log"; then
-              echo "⚠️ Potential secret found matching pattern: $pattern"
+              echo "WARNING: Potential secret found matching pattern: $pattern"
               FOUND_SECRETS=true
             fi
           done
 
           if [ "$FOUND_SECRETS" = true ]; then
-            echo "❌ Potential secrets detected. Please review and remove them."
+            echo "ERROR: Potential secrets detected. Please review and remove them."
             exit 1
           else
-            echo "✅ No obvious secret patterns detected"
+            echo "SUCCESS: No obvious secret patterns detected"
           fi
 
   dependency-check:

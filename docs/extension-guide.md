@@ -1,10 +1,10 @@
-# 📂 Extension Guide – NEOMINT-RESEARCH Project Structure
+# Extension Guide – NEOMINT-RESEARCH Project Structure
 
 This document defines the allowed structure, file types, and naming patterns.
 
 ---
 
-## 📦 Root Layout
+## Root Layout
 
 ```text
 src/            → Tool code, modules, scripts
@@ -15,7 +15,7 @@ logs/           → Auto-fix output & traces
 .devcontainer/  → Codespaces-ready dev environment
 ```
 
-## 🧱 Accepted File Types
+## Accepted File Types
 
 | Type           | Naming convention          |
 | -------------- | -------------------------- |
@@ -25,13 +25,13 @@ logs/           → Auto-fix output & traces
 | Docs           | `docs/*.md`                |
 | Status/Meta    | `agent.yml`, `status.json` |
 
-## 📑 Directory Rules
+## Directory Rules
 
 - All files must follow `lower_case_with_underscores.ext`
 - Avoid deep nesting; prefer flat structure
 - Never create `.bak`, `.copy`, `.tmp` etc.
 
-## 🤖 Agent Instructions
+## Agent Instructions
 
 - Use `extension-guide.md` to determine allowed paths
 - Use `status.json` to detect task state
