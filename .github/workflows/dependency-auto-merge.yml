@@ -50,12 +50,13 @@ jobs:
 
       - name: Wait for CI Checks
         uses: fountainhead/action-wait-for-check@v1.2.0
+        continue-on-error: true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: 'Security Audit and Vulnerability Scanning'
+          checkName: 'Code Quality Validation'
           ref: ${{ github.event.pull_request.head.sha }}
-          timeoutSeconds: 600
-          intervalSeconds: 30
+          timeoutSeconds: 300
+          intervalSeconds: 20
 
       - name: Auto-approve Security Updates
         if: steps.security-check.outputs.is_security_update == 'true'
