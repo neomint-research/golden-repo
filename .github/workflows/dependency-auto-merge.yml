@@ -49,13 +49,13 @@ jobs:
           echo "is_major_update=${{ steps.metadata.outputs.update-type == 'version-update:semver-major' }}" >> $GITHUB_OUTPUT
 
       - name: Wait for CI Checks
-        uses: lewagon/wait-on-check-action@v1.3.4
+        uses: fountainhead/action-wait-for-check@v1.2.0
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: 'Security Audit and Vulnerability Scanning'
           ref: ${{ github.event.pull_request.head.sha }}
-          check-name: 'Security Audit and Vulnerability Scanning'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-          allowed-conclusions: success,neutral,skipped
+          timeoutSeconds: 600
+          intervalSeconds: 30
 
       - name: Auto-approve Security Updates
         if: steps.security-check.outputs.is_security_update == 'true'

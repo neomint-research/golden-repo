@@ -24,10 +24,14 @@ Supports:
 npx degit neomint-research/template-project my-project && cd my-project && bash bootstrap.sh
 ```
 
-> For Windows PowerShell:
+> For Windows:
 
 ```powershell
+# PowerShell
 npx degit neomint-research/template-project my-project ; cd my-project ; ./bootstrap.ps1
+
+# Command Prompt/Batch
+npx degit neomint-research/template-project my-project && cd my-project && bootstrap.bat
 ```
 
 ---
