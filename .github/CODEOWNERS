@@ -1,54 +1,57 @@
 # Code Ownership Rules for Golden Repo Template
 # This file defines who must review changes to specific files and directories
+#
+# NOTE: Replace team references with actual usernames or teams when using this template
+# Example: @username or @organization/team-name
 
 # Global ownership - all files require review by repository maintainers
-* @neomint-research/maintainers
+# * @your-organization/maintainers
 
 # Security-sensitive files require security team review
-/.github/workflows/ @neomint-research/security-team @neomint-research/devops-team
-/CODEOWNERS @neomint-research/security-team @neomint-research/maintainers
-/.github/dependabot.yml @neomint-research/security-team
-/security/ @neomint-research/security-team
+# /.github/workflows/ @your-organization/security-team @your-organization/devops-team
+# /.github/CODEOWNERS @your-organization/security-team @your-organization/maintainers
+# /.github/dependabot.yml @your-organization/security-team
+# /security/ @your-organization/security-team
 
 # CI/CD and automation files require DevOps review
-/.github/workflows/*.yml @neomint-research/devops-team
-/.github/actions/ @neomint-research/devops-team
-/scripts/ @neomint-research/devops-team
-/Dockerfile* @neomint-research/devops-team
-/docker-compose*.yml @neomint-research/devops-team
+# /.github/workflows/*.yml @your-organization/devops-team
+# /.github/actions/ @your-organization/devops-team
+# /scripts/ @your-organization/devops-team
+# /Dockerfile* @your-organization/devops-team
+# /docker-compose*.yml @your-organization/devops-team
 
 # Configuration files require careful review
-/.prettierrc @neomint-research/frontend-team @neomint-research/maintainers
-/.eslintrc* @neomint-research/frontend-team
-/pyproject.toml @neomint-research/backend-team
-/requirements*.txt @neomint-research/backend-team
-/package*.json @neomint-research/frontend-team
-/yarn.lock @neomint-research/frontend-team
-/Pipfile* @neomint-research/backend-team
+# /.prettierrc @your-organization/frontend-team @your-organization/maintainers
+# /.eslintrc* @your-organization/frontend-team
+# /pyproject.toml @your-organization/backend-team
+# /requirements*.txt @your-organization/backend-team
+# /package*.json @your-organization/frontend-team
+# /yarn.lock @your-organization/frontend-team
+# /Pipfile* @your-organization/backend-team
 
 # Documentation requires technical writing review
-/README.md @neomint-research/docs-team @neomint-research/maintainers
-/docs/ @neomint-research/docs-team
-/*.md @neomint-research/docs-team
+# /README.md @your-organization/docs-team @your-organization/maintainers
+# /docs/ @your-organization/docs-team
+# /*.md @your-organization/docs-team
 
 # Source code by language/framework
-/src/python/ @neomint-research/backend-team
-/src/javascript/ @neomint-research/frontend-team
-/src/typescript/ @neomint-research/frontend-team
-/agents/ @neomint-research/ai-team @neomint-research/backend-team
+# /src/python/ @your-organization/backend-team
+# /src/javascript/ @your-organization/frontend-team
+# /src/typescript/ @your-organization/frontend-team
+# /agents/ @your-organization/ai-team @your-organization/backend-team
 
 # Test files require review from respective teams
-/tests/ @neomint-research/qa-team
-/test/ @neomint-research/qa-team
-/**/*test*.py @neomint-research/qa-team @neomint-research/backend-team
-/**/*test*.js @neomint-research/qa-team @neomint-research/frontend-team
-/**/*spec*.js @neomint-research/qa-team @neomint-research/frontend-team
+# /tests/ @your-organization/qa-team
+# /test/ @your-organization/qa-team
+# /**/*test*.py @your-organization/qa-team @your-organization/backend-team
+# /**/*test*.js @your-organization/qa-team @your-organization/frontend-team
+# /**/*spec*.js @your-organization/qa-team @your-organization/frontend-team
 
 # License and legal files require legal review
-/LICENSE* @neomint-research/legal-team @neomint-research/maintainers
-/NOTICE* @neomint-research/legal-team
-/COPYRIGHT* @neomint-research/legal-team
+# /LICENSE* @your-organization/legal-team @your-organization/maintainers
+# /NOTICE* @your-organization/legal-team
+# /COPYRIGHT* @your-organization/legal-team
 
 # Template-specific files
-/template/ @neomint-research/maintainers
-/examples/ @neomint-research/docs-team @neomint-research/maintainers
+# /template/ @your-organization/maintainers
+# /examples/ @your-organization/docs-team @your-organization/maintainers

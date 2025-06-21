@@ -71,6 +71,6 @@ When using this template:
 For security-related questions or concerns:
 
 - **Email**: research@neomint.com
-- **Team**: @neomint-research/security-team
+- **Team**: Replace with your security team contact (e.g., @your-organization/security-team)
 
 Thank you for helping keep our projects secure! 🔐
