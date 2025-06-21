@@ -104,7 +104,7 @@ call :initialize_git_repo
 call :log_success "Bootstrap completed!"
 call :log_info "Next steps:"
 echo   1. Update README.md
-echo   2. Configure .github/CODEOWNERS  
+echo   2. Configure .github/CODEOWNERS
 echo   3. Start developing!
 
 goto :eof
