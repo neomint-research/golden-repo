@@ -34,13 +34,13 @@ npx degit neomint-research/template-project my-project ; cd my-project ; ./boots
 
 ## Security & Maintenance Features
 
-| Feature             | Description                                 |
-| ------------------- | ------------------------------------------- |
-| Self-Healing CI     | Auto-corrects format/lint issues on commit  |
-| Security Checks     | CodeQL, Trivy, OSV & Secretscanner          |
-| Dependabot          | Daily update of dependencies and Actions    |
-| CODEOWNERS          | Review enforcement for sensitive files      |
-| Agent-Compatible    | Token-efficient, semantically guided layout |
+| Feature          | Description                                 |
+| ---------------- | ------------------------------------------- |
+| Self-Healing CI  | Auto-corrects format/lint issues on commit  |
+| Security Checks  | CodeQL, Trivy, OSV & Secretscanner          |
+| Dependabot       | Daily update of dependencies and Actions    |
+| CODEOWNERS       | Review enforcement for sensitive files      |
+| Agent-Compatible | Token-efficient, semantically guided layout |
 
 ---
 
