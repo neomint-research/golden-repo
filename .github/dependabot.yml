@@ -8,10 +8,12 @@ updates:
       time: '02:00'
       timezone: 'UTC'
     open-pull-requests-limit: 10
-    reviewers:
-      - 'neomint-research/devops-team'
-    assignees:
-      - 'neomint-research/security-team'
+    # Note: Team references removed as they may not exist in all repositories
+    # Add specific usernames or recreate teams as needed:
+    # reviewers:
+    #   - 'username1'
+    # assignees:
+    #   - 'username2'
     commit-message:
       prefix: 'chore(deps)'
       include: 'scope'
@@ -28,10 +30,12 @@ updates:
       time: '02:00'
       timezone: 'UTC'
     open-pull-requests-limit: 10
-    reviewers:
-      - 'neomint-research/backend-team'
-    assignees:
-      - 'neomint-research/security-team'
+    # Note: Team references removed as they may not exist in all repositories
+    # Add specific usernames or recreate teams as needed:
+    # reviewers:
+    #   - 'username1'
+    # assignees:
+    #   - 'username2'
     commit-message:
       prefix: 'chore(deps)'
       include: 'scope'
@@ -55,10 +59,12 @@ updates:
       time: '02:00'
       timezone: 'UTC'
     open-pull-requests-limit: 10
-    reviewers:
-      - 'neomint-research/frontend-team'
-    assignees:
-      - 'neomint-research/security-team'
+    # Note: Team references removed as they may not exist in all repositories
+    # Add specific usernames or recreate teams as needed:
+    # reviewers:
+    #   - 'username1'
+    # assignees:
+    #   - 'username2'
     commit-message:
       prefix: 'chore(deps)'
       include: 'scope'

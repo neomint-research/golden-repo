@@ -24,18 +24,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-code-check-${{ hashFiles('**/requirements*.txt') }}
+          key: ${{ runner.os }}-pip-check-code-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml', '**/setup.py') }}
           restore-keys: |
-            ${{ runner.os }}-pip-code-check-
+            ${{ runner.os }}-pip-check-code-
             ${{ runner.os }}-pip-
 
       - name: Cache Node.js dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-code-check-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-check-code-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-code-check-
+            ${{ runner.os }}-node-check-code-
             ${{ runner.os }}-node-
 
       - name: Cache pre-commit
@@ -71,11 +71,6 @@ jobs:
             exit 1
           fi
           echo "SUCCESS: Pre-commit hooks passed"
-
-      - name: Setup Python for Tests
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
 
       - name: Install Test Dependencies
         run: |

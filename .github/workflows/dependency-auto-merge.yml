@@ -125,8 +125,8 @@ jobs:
 
           Please review the changelog and breaking changes before merging.
 
-          **Security Team**: @neomint-research/security-team
-          **Maintainers**: @neomint-research/maintainers"
+          **Note**: Please review the changelog and breaking changes before merging.
+          **Manual Review Required**: This update requires careful evaluation."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -203,7 +203,7 @@ jobs:
           Critical security vulnerabilities detected in this dependency update.
           Manual security review required before merging.
 
-          **Security Team**: @neomint-research/security-team"
+          **Manual Security Review Required**: Please review before merging."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
