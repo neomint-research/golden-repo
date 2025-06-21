@@ -1,5 +1,11 @@
 # 🛡️ NEOMINT-RESEARCH Project Template
 
+[![Check Code & Format](https://github.com/neomint-research/golden-repo/actions/workflows/check-code.yml/badge.svg)](https://github.com/neomint-research/golden-repo/actions/workflows/check-code.yml)
+[![Security Audit](https://github.com/neomint-research/golden-repo/actions/workflows/security-audit.yml/badge.svg)](https://github.com/neomint-research/golden-repo/actions/workflows/security-audit.yml)
+[![Dependency Auto-Merge](https://github.com/neomint-research/golden-repo/actions/workflows/dependency-auto-merge.yml/badge.svg)](https://github.com/neomint-research/golden-repo/actions/workflows/dependency-auto-merge.yml)
+[![License](https://img.shields.io/github/license/neomint-research/golden-repo)](./LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/neomint-research/golden-repo)](https://github.com/neomint-research/golden-repo/commits/main)
+
 This is the official NEOMINT-RESEARCH template repository. It is designed for security-first,
 agent-compatible, and highly reusable projects.
 
