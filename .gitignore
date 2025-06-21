@@ -51,3 +51,15 @@ coverage/
 
 # Secret scanning (keep baseline for detect-secrets)
 # .secrets.baseline
+
+# Code quality tools
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.flake8
+*.log
+
+# Analysis outputs
+code_quality_report.json
+static_review_report.html

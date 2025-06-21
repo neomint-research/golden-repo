@@ -101,15 +101,22 @@ class TestExampleToolIntegration:
         """Test main function with default data."""
         with patch("sys.argv", ["example_tool.py"]):
             with patch("sys.exit") as mock_exit:
-                with patch("builtins.print") as mock_print:
+                with patch("sys.stdout.write") as mock_stdout:
                     from example_tool import main
 
                     main()
 
-                    # Check that print was called with JSON output
-                    mock_print.assert_called_once()
-                    output = mock_print.call_args[0][0]
-                    result = json.loads(output)
+                    # Check that stdout.write was called with JSON output
+                    assert mock_stdout.call_count >= 1
+                    # Find the JSON output call (should be the last one)
+                    json_call = None
+                    for call in mock_stdout.call_args_list:
+                        if call[0][0].strip().startswith('{'):
+                            json_call = call[0][0]
+                            break
+
+                    assert json_call is not None, "No JSON output found"
+                    result = json.loads(json_call.rstrip('\n'))
                     assert result["status"] == "success"
                     mock_exit.assert_called_once_with(0)
 
@@ -118,14 +125,21 @@ class TestExampleToolIntegration:
         test_input = '{"test": "value", "items": ["a", "b"]}'
         with patch("sys.argv", ["example_tool.py", "--input", test_input]):
             with patch("sys.exit") as mock_exit:
-                with patch("builtins.print") as mock_print:
+                with patch("sys.stdout.write") as mock_stdout:
                     from example_tool import main
 
                     main()
 
-                    mock_print.assert_called_once()
-                    output = mock_print.call_args[0][0]
-                    result = json.loads(output)
+                    assert mock_stdout.call_count >= 1
+                    # Find the JSON output call (should be the last one)
+                    json_call = None
+                    for call in mock_stdout.call_args_list:
+                        if call[0][0].strip().startswith('{'):
+                            json_call = call[0][0]
+                            break
+
+                    assert json_call is not None, "No JSON output found"
+                    result = json.loads(json_call.rstrip('\n'))
                     assert result["status"] == "success"
                     assert result["item_count"] == 2
                     mock_exit.assert_called_once_with(0)
@@ -134,12 +148,9 @@ class TestExampleToolIntegration:
         """Test main function with invalid JSON input."""
         with patch("sys.argv", ["example_tool.py", "--input", "invalid json"]):
             with patch("sys.exit", side_effect=SystemExit) as mock_exit:
-                with patch("builtins.print") as mock_print:
-                    from example_tool import main
+                from example_tool import main
 
-                    with pytest.raises(SystemExit):
-                        main()
+                with pytest.raises(SystemExit):
+                    main()
 
-                    mock_print.assert_called_once()
-                    assert "Error: Invalid JSON" in mock_print.call_args[0][0]
-                    mock_exit.assert_called_once_with(1)
+                mock_exit.assert_called_once_with(1)

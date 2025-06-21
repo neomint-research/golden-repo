@@ -12,6 +12,7 @@ class ExampleTool:
     """Example tool demonstrating Python best practices."""
 
     def __init__(self, verbose: bool = False):
+        """Initialize the ExampleTool."""
         self.logger = self._setup_logging(verbose)
         self.logger.info("ExampleTool initialized")
 
@@ -77,14 +78,15 @@ def main():
         try:
             input_data = json.loads(args.input)
         except json.JSONDecodeError as e:
-            print(f"Error: Invalid JSON: {e}")
+            tool.logger.error(f"Invalid JSON: {e}")
             sys.exit(1)
     else:
         input_data = {"items": ["item1", "item2", "item3"]}
 
     # Run tool and output results
     results = tool.run(input_data)
-    print(json.dumps(results, indent=2))
+    # Output results to stdout for CLI usage (this is the main program output)
+    sys.stdout.write(json.dumps(results, indent=2) + '\n')
     sys.exit(0 if results.get("status") == "success" else 1)
 
 
